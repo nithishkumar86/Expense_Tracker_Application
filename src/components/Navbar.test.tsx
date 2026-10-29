@@ -3,20 +3,25 @@ import { render, screen } from "@testing-library/react";
 import { Navbar } from "./Navbar";
 
 describe("Navbar", () => {
-  it("renders Home, Expense, Sign up, and Login as inert buttons when rendered", () => {
+  it("renders Home and Expense as inert buttons when rendered", () => {
     render(<Navbar />);
 
-    const labels = ["Home", "Expense", "Sign up", "Login"];
-    for (const label of labels) {
+    for (const label of ["Home", "Expense"]) {
       const button = screen.getByRole("button", { name: label });
       expect(button).toHaveAttribute("type", "button");
-      expect(button).not.toHaveAttribute("href");
     }
   });
 
-  it("renders no anchor links when rendered", () => {
+  it("renders Sign up and Login as links to their routes when rendered", () => {
     render(<Navbar />);
 
-    expect(screen.queryAllByRole("link")).toHaveLength(0);
+    expect(screen.getByRole("link", { name: "Sign up" })).toHaveAttribute(
+      "href",
+      "/signup",
+    );
+    expect(screen.getByRole("link", { name: "Login" })).toHaveAttribute(
+      "href",
+      "/login",
+    );
   });
 });
